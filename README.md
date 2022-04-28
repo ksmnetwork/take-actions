@@ -19,6 +19,7 @@ Take a look at the actions file: [Git Actions] and change the addresses for the 
 If you like to add SMS Notification add:
 ```
       - name: 'Sending SMS Notification'
+        if: steps.versions.outputs.tag != steps.versions.outputs.v1version && steps.versions.outputs.tag != steps.versions.outputs.v21version && steps.versions.outputs.draft != true && steps.versions.outputs.prerelease != true
         uses: twilio-labs/actions-sms@v1
         with:
           fromPhoneNumber: ${{ secrets.FROM_PHONE }}
