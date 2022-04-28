@@ -67,7 +67,7 @@ jobs:
       - name: Deploy to MultiCloud
         run: |
           echo "Github Action Deployment"
-          exho "https://docs.github.com/en/actions/deployment/about-deployments/deploying-with-github-actions"
+          echo "https://docs.github.com/en/actions/deployment/about-deployments/deploying-with-github-actions"
           
       - name: Emergency services and useful phone numbers
         run: |
