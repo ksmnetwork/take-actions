@@ -12,9 +12,24 @@ if: steps.versions.outputs.tag != steps.versions.outputs...*
 :--- | :--- | :--- | :--- | :--- | :--- | :--- | :---
 | 2022-04-28 00:20:54 | v0.9.19 | v0.9.18 | UPDATE! | v0.9.19 | OK! | false | false
 
-Take a look at the actions file at [Git Actions]
+Take a look at the actions file: [Git Actions] and change the addresses for the validators you need to monitor.
 
 ![polkadot](https://github.com/ksmnetwork/take-actions/actions/workflows/polkadot-versions-check.yml/badge.svg)
+
+If you like to add SMS Notification add:
+```
+      - name: 'Sending SMS Notification'
+        uses: twilio-labs/actions-sms@v1
+        with:
+          fromPhoneNumber: ${{ secrets.FROM_PHONE }}
+          toPhoneNumber: ${{ secrets.TO_PHONE }}
+          message: 'Polkadot has new version: ${{ steps.versions.outputs.tag }}'
+        env:
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_API_KEY: ${{ secrets.TWILIO_API_KEY }}
+          TWILIO_API_SECRET: ${{ secrets.TWILIO_API_SECRET }}
+```
+Validators aresses are set at:
 ```
 echo ::set-output name=v1version::
 ```
