@@ -1,0 +1,79 @@
+name: Validators Version comparison workflow
+on:
+  schedule:
+    - cron:  '0 * * * *'
+    
+concurrency: 
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+  
+jobs:
+  versions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lest checkout
+        uses: actions/checkout@v3
+        
+      - name: Get the versions
+        id: versions
+        run: |
+          read -r tag prerelease draft < <(echo $(curl -s -X GET 'https://api.github.com/repos/paritytech/polkadot/releases/latest' | jq -r '.tag_name, .prerelease, .draft' ))
+          echo ::set-output name=tag::"$tag"
+          echo ::set-output name=draft::"$draft"
+          echo ::set-output name=prerelease::"$prerelease"
+          echo ::set-output name=v1version::"v$(curl -s -X GET --max-time 10 --retry 5 --retry-delay 10 --retry-max-time 10 'https://kusama.w3f.community/candidate/H1bSKJxoxzxYRCdGQutVqFGeW7xU3AcN6vyEdZBU7Qb1rsZ' | jq -r '.version' | grep -oE '^[0-9].[0-9].[0-9]+')"
+          echo ::set-output name=v2version::"v$(curl -s -X GET --max-time 10 --retry 5 --retry-delay 10 --retry-max-time 10 'https://kusama.w3f.community/candidate/GREVfZSgcQjmPgGfx9Y4WNfnqa9Jz96pQdHQzwMUwYcVeGa' | jq -r '.version' | grep -oE '^[0-9].[0-9].[0-9]+')"
+          
+      - name: Compare the versions
+        id: compare
+        run: |
+          [[ "${{ steps.versions.outputs.tag }}" == "${{ steps.versions.outputs.v1version }}" ]] \
+          && echo ::set-output name=v1status::"OK!" || echo ::set-output name=v1status::"UPDATE!"
+
+          [[ "${{ steps.versions.outputs.tag }}" == "${{ steps.versions.outputs.v2version }}" ]] \
+          && echo ::set-output name=v2status::"OK!" || echo ::set-output name=v2status::"UPDATE!"
+          
+      - name: Set the date
+        id: date
+        run: | 
+          echo ::set-output name=date::"$(date +"%Y-%m-%d %H:%M:%S")"
+
+      - name: Update the README file
+        if: steps.versions.outputs.tag != steps.versions.outputs.v1version && steps.versions.outputs.tag != steps.versions.outputs.v21version && steps.versions.outputs.draft != true && steps.versions.outputs.prerelease != true
+        run: |
+          [[ -z ${{ steps.versions.outputs.tag }} || -z ${{ steps.versions.outputs.v1version }} || -z ${{ steps.versions.outputs.v2version }} ]] && echo "NO VARS!" || echo "VARS OK!"
+
+          sed -i "/---/a \
+          | ${{ steps.date.outputs.date }} \
+          | ${{ steps.versions.outputs.tag }} \
+          | ${{ steps.versions.outputs.v1version }} \
+          | ${{ steps.compare.outputs.v1status }} \
+          | ${{ steps.versions.outputs.v2version }} \
+          | ${{ steps.compare.outputs.v2status }} \
+          | ${{ steps.versions.outputs.draft }} \
+          | ${{ steps.versions.outputs.prerelease }}
+          " ./README.md
+
+      - name: Commit report
+        continue-on-error: true
+        id: update
+        run: |
+          git add ./README.md
+          git config --global user.name 'Take actions bot'
+          git config --global user.email 'take-actions@ksm.network'
+          git commit -am "Github actions Polkadot version check"
+          git push
+
+      - name: Deploy to MultiCloud
+        run: |
+          echo "Github Action Deployment"
+          exho "https://docs.github.com/en/actions/deployment/about-deployments/deploying-with-github-actions"
+          
+      - name: Emergency services and useful phone numbers
+        run: |
+          echo "Maintainer"
+          echo "https://ksm.network"
+
+      - name: Matrix, Slack, Tlegram
+        run: |
+          echo "API call"
