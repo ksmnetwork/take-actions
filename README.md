@@ -16,7 +16,12 @@ Take a look at the actions file: [Git Actions] and change the addresses for the 
 
 ![polkadot](https://github.com/ksmnetwork/take-actions/actions/workflows/polkadot-versions-check.yml/badge.svg)
 
-If you like to add SMS Notification add:
+#### Prerequisites if you want to add SMS notification on release:
+- A Twilio Account. [Sign up for free]
+- A [Twilio API Key and Secret]
+- https://github.com/twilio-labs/actions-sms
+
+Add to [Git Actions]
 ```
       - name: 'Sending SMS Notification'
         if: steps.versions.outputs.tag != steps.versions.outputs.v1version && steps.versions.outputs.tag != steps.versions.outputs.v21version && steps.versions.outputs.draft != true && steps.versions.outputs.prerelease != true
@@ -74,3 +79,5 @@ on:
 [Git Actions]: https://github.com/ksmnetwork/take-actions/blob/main/.github/workflows/polkadot-versions-check.yml
 [KSMNETWORK]: https://polkadot.js.org/apps/#/staking?filter=KSMNETWORK&rpc=wss://kusama.api.onfinality.io/public-ws
 [KSMNETWORK-WEST]: https://polkadot.js.org/apps/#/staking?filter=KSMNETWORK-WEST&rpc=wss://kusama.api.onfinality.io/public-ws
+[Sign up for free]: https://www.twilio.com/try-twilio
+[Twilio API Key and Secret]: https://www.twilio.com/docs/iam/keys/api-key
