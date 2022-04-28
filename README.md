@@ -1,6 +1,6 @@
 # take-actions
 Github actions to check if you need to take actions and update Polkadot to it's latest release. 
-Based on GitHUB API v4, the action will check Polkadot git repository for tags: Version, Draft, Prerelease and will compare it with the 1KV Validators version taken from [Thousand Validators]. 
+Based on GitHUB API v4, the action will check Polkadot git repository for tags: Version, Draft, Prerelease and will compare it with the 1KV Validators version. 
 
 If each of the conditions DRAFT, PRERELEASE, VERSION pass it's check the README file will be updated and commited at: 
 ```
@@ -55,7 +55,6 @@ on:
 ```15FxvBFDd3X7H9qcMGqsiuvFYEg4D3mBoTA2LQufreysTHKA```
 * **URL for nomination at PolkadotJS: [KSMNETWORK-WEST]**
 
-[Thousand Validators]: http://thousand-validators.kusama.network/
 [Git Actions]: https://github.com/ksmnetwork/take-actions/blob/main/.github/workflows/polkadot-versions-check.yml
 [KSMNETWORK]: https://polkadot.js.org/apps/#/staking?filter=KSMNETWORK&rpc=wss://kusama.api.onfinality.io/public-ws
 [KSMNETWORK-WEST]: https://polkadot.js.org/apps/#/staking?filter=KSMNETWORK-WEST&rpc=wss://kusama.api.onfinality.io/public-ws
