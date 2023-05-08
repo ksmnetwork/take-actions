@@ -10,6 +10,7 @@ if: steps.versions.outputs.tag != steps.versions.outputs...*
 #### How we are doing today... any UPDATES?
 | Date | Polkadot | NodeA | Action | NodeB | Action | IsDraft | IsPrerelease
 :--- | :--- | :--- | :--- | :--- | :--- | :--- | :---
+| 2023-05-08 14:10:09 | v0.9.42 | v | UPDATE! | v | UPDATE! | false | false
 | 2023-05-08 13:13:25 | v0.9.42 | v | UPDATE! | v | UPDATE! | false | false
 | 2023-05-08 12:21:21 | v0.9.42 | v | UPDATE! | v | UPDATE! | false | false
 | 2023-05-08 11:09:22 | v0.9.42 | v | UPDATE! | v | UPDATE! | false | false
